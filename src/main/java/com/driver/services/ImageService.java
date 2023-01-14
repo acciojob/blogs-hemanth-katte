@@ -4,7 +4,6 @@ import com.driver.models.*;
 import com.driver.repositories.BlogRepository;
 import com.driver.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.embedded.undertow.UndertowWebServer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,7 +70,7 @@ public class ImageService {
         if(image == null)
             return 0;
 
-        int imageDimensions = extractInteger(image.getDimension());
+        int imageDimensions = extractInteger(image.getDimensions());
 
         int screenDimensions1 = extractInteger(screenDimensions);
 
