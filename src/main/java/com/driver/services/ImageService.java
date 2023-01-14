@@ -21,7 +21,7 @@ public class ImageService {
         //create an image based on given parameters and add it to the imageList of given blog
         Image newImage = new Image();
         newImage.setDescription(description);
-        newImage.setDimension(dimensions);
+        newImage.setDimensions(dimensions);
        // newImage.setBlog(blog);
 
         Blog blogFromRepo = blogRepository.findById(blog.getId()).get();
@@ -39,9 +39,9 @@ public class ImageService {
         return newImage;
     }
 
-    public void deleteImage(Integer id){
+    public void deleteImage(Image image){
 
-        Image imageToBeDeleted = imageRepository2.findById(id).get();
+        Image imageToBeDeleted = imageRepository2.findById(image.getId()).get();
 
         int blogId = imageToBeDeleted.getBlog().getId();
 
@@ -55,7 +55,7 @@ public class ImageService {
 
         blogRepository.save(blog);
 
-        imageRepository2.deleteById(id);
+        imageRepository2.deleteById(image.getId());
     }
 
     public Image findById(int id) {
@@ -63,10 +63,10 @@ public class ImageService {
         return imageRepository2.findById(id).get();
     }
 
-    public int countImagesInScreen(Integer id, String screenDimensions) {
+    public int countImagesInScreen(Image image, String screenDimensions) {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
         //In case the image is null, return 0
-        Image image = imageRepository2.findById(id).get();
+        //Image image = imageRepository2.findById(id).get();
 
         if(image == null)
             return 0;
