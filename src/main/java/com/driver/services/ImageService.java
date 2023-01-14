@@ -25,13 +25,13 @@ public class ImageService {
 
         Blog blogFromRepo = blogRepository.findById(blog.getId()).get();
 
-        newImage.setBlog(blogFromRepo);
-
         List<Image> imageList = blogFromRepo.getImageList();
 
         imageList.add(newImage);
 
         blogFromRepo.setImageList(imageList);
+
+        newImage.setBlog(blogFromRepo);
 
         blogRepository.save(blogFromRepo);
 
@@ -41,6 +41,9 @@ public class ImageService {
     public void deleteImage(Image image){
 
         Image imageToBeDeleted = imageRepository2.findById(image.getId()).get();
+
+        if(imageToBeDeleted == null)
+            return;
 
         int blogId = imageToBeDeleted.getBlog().getId();
 

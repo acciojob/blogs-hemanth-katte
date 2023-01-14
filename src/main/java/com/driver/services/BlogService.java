@@ -84,6 +84,9 @@ public class BlogService {
         //delete blog and corresponding images
         Blog blogToBeDeleted = blogRepository1.findById(blogId).get();
 
+        if(blogToBeDeleted == null)
+            return;
+
         int userId = blogToBeDeleted.getUser().getId();
 
         User user = userRepository1.findById(userId).get();
