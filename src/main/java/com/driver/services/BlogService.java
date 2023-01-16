@@ -20,7 +20,7 @@ public class BlogService {
     BlogRepository blogRepository1;
 
     @Autowired
-    ImageService imageService1;// = new ImageService();
+    ImageService imageService1; // = new ImageService();
 
     @Autowired
     UserRepository userRepository1;
@@ -38,6 +38,7 @@ public class BlogService {
         Blog newBlog = new Blog();
         newBlog.setTitle(title);
         newBlog.setContent(content);
+        newBlog.setPubDate(new Date());
 
         User user = userRepository1.findById(userId).get();
 
@@ -49,6 +50,7 @@ public class BlogService {
 
         user.setBlogList(userBlogList);
 
+        blogRepository1.save(newBlog);
         userRepository1.save(user);
 
         //updating the blog details
@@ -64,15 +66,20 @@ public class BlogService {
 
     public void addImage(Integer blogId, String description, String dimensions){
         //add an image to the blog after creating it
-        Image newImage = new Image();
-        newImage.setDescription(description);
-        newImage.setDimensions(dimensions);
+       // Image newImage = new Image();
+       // newImage.setDescription(description);
+       // newImage.setDimensions(dimensions);
 
         Blog blog = blogRepository1.findById(blogId).get();
 
+        Image image=imageService1.createAndReturn(blog,description,dimensions);
+        image.setBlog(blog);
+
         List<Image> imageList = blog.getImageList();
 
-        imageList.add(newImage);
+        if(imageList == null) imageList = new ArrayList<>();
+
+        imageList.add(image);
 
         blog.setImageList(imageList);
 
