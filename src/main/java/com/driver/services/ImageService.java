@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ImageService {
@@ -49,24 +50,13 @@ public class ImageService {
         //In case the image is null, return 0
         //Image image = imageRepository2.findById(id).get();
 
-        if(image == null || screenDimensions.length() == 0)
-            return 0;
-
-        int imageDimensions = extractInteger(image.getDimensions());
-
-        int screenDimensions1 = extractInteger(screenDimensions);
-
-        return screenDimensions1/imageDimensions;
+        if (screenDimensions.split("X").length == 2 || Objects.nonNull(image)) {
+            Integer maxLength = Integer.parseInt(screenDimensions.split("X")[0]) / Integer.parseInt(image.getDimensions().split("X")[0]) ;
+            Integer maxBreadth = Integer.parseInt(screenDimensions.split("X")[1]) / Integer.parseInt(image.getDimensions().split("X")[1]);
+            return maxLength * maxBreadth;
+        }
+        return 0;
 
     }
-
-    public int extractInteger(String dimensions){
-
-        String[] dimensionsArray = dimensions.split("X");
-
-        return Integer.valueOf(dimensionsArray[0]) * Integer.valueOf(dimensionsArray[1]);
-    }
-
-
 
 }
