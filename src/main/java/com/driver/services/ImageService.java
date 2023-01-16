@@ -18,49 +18,25 @@ public class ImageService {
     BlogRepository blogRepository;
 
     public Image createAndReturn(Blog blog, String description, String dimensions){
+
         //create an image based on given parameters and add it to the imageList of given blog
-        Image newImage = new Image();
-        newImage.setDescription(description);
-        newImage.setDimensions(dimensions);
-        newImage.setBlog(blog);
 
-        Blog blogFromRepo = blogRepository.findById(blog.getId()).get();
-
-        List<Image> imageList = blogFromRepo.getImageList();
-
-        if(imageList == null) imageList = new ArrayList<>();
-
-        imageList.add(newImage);
-
-        blogFromRepo.setImageList(imageList);
-
-      //  newImage.setBlog(blogFromRepo);
-        imageRepository2.save(newImage);
-        blogRepository.save(blogFromRepo);
-
-        return newImage;
+        Image image=new Image(description,dimensions);
+        image.setBlog(blog);
+        List<Image> res=blog.getImageList();
+        if(res==null){
+            res=new ArrayList<>();
+        }
+        res.add(image);
+        blog.setImageList(res);
+        imageRepository2.save(image);
+        blogRepository.save(blog);
+        return image;
     }
 
     public void deleteImage(Image image){
 
-        Image imageToBeDeleted = imageRepository2.findById(image.getId()).get();
-
-        if(imageToBeDeleted == null)
-            return;
-
-        int blogId = imageToBeDeleted.getBlog().getId();
-
-        Blog blog = blogRepository.findById(blogId).get();
-
-        List<Image> blogImageList = blog.getImageList();
-
-        blogImageList.remove(imageToBeDeleted);
-
-        blog.setImageList(blogImageList);
-
-        blogRepository.save(blog);
-
-        imageRepository2.deleteById(image.getId());
+        imageRepository2.delete(image);
     }
 
     public Image findById(int id) {
